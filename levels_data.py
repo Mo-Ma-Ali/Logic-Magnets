@@ -1,0 +1,22 @@
+levels = [
+    [11, [["Attract", (1, 2)], ["Immobile", (0, 0)], ["Immobile", (0, 4)]], [["Target", (0, 1)], ["Target", (0, 2)], ["Target", (0, 3)]], 2, 2, 5],
+    [12, [["Attract", (3, 1)], ["Immobile", (0, 0)], ["Immobile", (1, 0)], ["Immobile", (4, 3)]], [["Target", (1, 0)], ["Target", (2, 0)], ["Target", (4, 0)], ["Target", (4, 2)]], 1, 5, 4],
+    [13, [["Attract", (2, 3)], ["Immobile", (0, 0)], ["Immobile", (0, 3)], ["Immobile", (0, 4)]], [["Target", (0, 3)], ["Target", (0, 4)], ["Target", (1, 1)], ["Target", (2, 1)]], 2, 3, 6],
+    [14, [["Attract", (3, 3)], ["Immobile", (0, 3)], ["Immobile", (3, 0)], ["Immobile", (2, 0)]], [["Target", (1, 0)], ["Target", (1, 2)], ["Target", (2, 1)], ["Target", (2, 2)]], 2, 4, 4],
+    [15, [["Attract", (2, 2)], ["Hate", (1, 2)], ["Immobile", (0, 1)], ["Immobile", (0, 3)]], [["Target", (0, 0)], ["Target", (0, 2)], ["Target", (1, 4)], ["Target", (2, 4)]], 2, 3, 5],
+    [16, [["Attract", (2, 0)], ["Hate", (2, 4)], ["Immobile", (1, 2)], ["Immobile", (3, 2)]], [["Target", (0, 3)], ["Target", (0, 4)], ["Target", (4, 0)], ["Target", (4, 3)]], 3, 5, 5],
+    [17, [["Attract", (0, 0)], ["Hate", (3, 3)], ["Immobile", (0, 2)], ["Immobile", (2, 0)]], [["Target", (1, 1)], ["Target", (1, 3)], ["Target", (2, 2)], ["Target", (3, 1)]], 2, 4, 4],
+    [18, [["Attract", (4, 2)], ["Hate", (4, 3)], ["Immobile", (2, 0)], ["Immobile", (0, 3)], ["Immobile", (2, 5)]], [["Target", (2, 1)], ["Target", (2, 2)], ["Target", (2, 3)], ["Target", (2, 5)], ["Target", (1, 3)]], 2, 5, 6],
+    [19, [["Attract", (2, 2)], ["Hate", (0, 2)], ["Immobile", (0, 1)], ["Immobile", (0, 3)], ["Immobile", (4, 1)], ["Immobile", (4, 3)]], [["Target", (1, 0)], ["Target", (3, 0)], ["Target", (1, 4)], ["Target", (2, 1)], ["Target", (3, 2)], ["Target", (3, 4)]], 4, 5, 5],
+    [20, [["Attract", (4, 3)], ["Hate", (4, 2)], ["Immobile", (0, 1)], ["Immobile", (0, 2)], ["Immobile", (4, 0)]], [["Target", (0, 1)], ["Target", (0, 3)], ["Target", (1, 0)], ["Target", (2, 0)], ["Target", (3, 0)]], 2, 5, 4],
+    [21, [["Attract", (2, 3)], ["Hate", (2, 0)], ["Immobile", (0, 1)], ["Immobile", (1, 1)], ["Immobile", (1, 2)]], [["Target", (0, 2)], ["Target", (1, 0)], ["Target", (1, 2)], ["Target", (2, 0)], ["Target", (2, 1)]], 2, 3, 4],
+    [22, [["Attract", (3, 2)], ["Hate", (0, 0)], ["Immobile", (0, 4)], ["Immobile", (0, 3)], ["Immobile", (3, 0)]], [["Target", (0, 1)], ["Target", (0, 3)], ["Target", (1, 0)], ["Target", (1, 4)], ["Target", (2, 1)]], 3, 4, 5],
+    [23, [["Attract", (3, 2)], ["Hate", (3, 4)], ["Immobile", (0, 3)], ["Immobile", (1, 4)], ["Immobile", (2, 0)]], [["Target", (0, 2)], ["Target", (2, 1)], ["Target", (2, 2)], ["Target", (2, 3)], ["Target", (3, 2)]], 3, 4, 5],
+    [24, [["Attract", (3, 0)], ["Hate", (1, 4)], ["Immobile", (0, 1)], ["Immobile", (1, 3)], ["Immobile", (3, 3)]], [["Target", (0, 4)], ["Target", (2, 1)], ["Target", (2, 3)], ["Target", (4, 1)], ["Target", (4, 2)]], 3, 5, 5],
+    [25, [["Attract", (0, 3)], ["Hate", (4, 0)], ["Immobile", (0, 0)], ["Immobile", (1, 2)], ["Immobile", (3, 2)], ["Immobile", (4, 3)]], [["Target", (0, 0)], ["Target", (0, 3)], ["Target", (2, 0)], ["Target", (4, 0)], ["Target", (4, 1)], ["Target", (4, 2)]], 3, 5, 4],
+    [26, [["Attract", (3, 0)], ["Hate", (1, 0)], ["Immobile", (1, 1)], ["Immobile", (2, 3)]], [["Target", (0, 0)], ["Target", (3, 0)], ["Target", (3, 2)], ["Target", (3, 3)]], 3, 4, 5],
+    [27, [["Attract", (2, 3)], ["Attract", (3, 3)], ["Hate", (2, 3)], ["Immobile", (0, 4)], ["Immobile", (2, 1)], ["Immobile", (2, 4)], ["Immobile", (3, 4)]], [["Target", (0, 1)], ["Target", (0, 2)], ["Target", (0, 3)], ["Target", (0, 5)], ["Target", (1, 1)], ["Target", (1, 4)], ["Target", (2, 4)]], 3, 4, 6],
+    [28, [["Attract", (3, 0)], ["Hate", (2, 2)], ["Immobile", (0, 1)], ["Immobile", (4, 1)], ["Immobile", (5, 1)]], [["Target", (1, 0)], ["Target", (1, 2)], ["Target", (2, 1)], ["Target", (4, 1)], ["Target", (5, 0)]], 3, 6, 3],
+    [29, [["Attract", (1, 3)], ["Attract", (3, 5)], ["Hate", (3, 1)], ["Immobile", (0, 3)], ["Immobile", (1, 1)], ["Immobile", (2, 5)], ["Immobile", (3, 2)]], [["Target", (0, 4)], ["Target", (0, 5)], ["Target", (1, 0)], ["Target", (1, 1)], ["Target", (1, 3)], ["Target", (1, 5)], ["Target", (2, 2)]], 2, 4, 6],
+    [30, [["Attract", (0, 0)], ["Hate", (2, 2)], ["Immobile", (1, 3)], ["Immobile", (3, 4)], ["Immobile", (3, 5)]], [["Target", (0, 0)], ["Target", (0, 2)], ["Target", (2, 2)], ["Target", (3, 4)], ["Target", (4, 3)]], 3, 5, 6]
+]
