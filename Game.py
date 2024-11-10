@@ -1,33 +1,34 @@
 import pygame
 import sys
 from levels_data import levels 
+from Search import Search
+from copy import deepcopy
 pygame.init()
 
 # Constants
 MENU_BACKGROUND = (60, 60, 60) 
 WIDTH, HEIGHT = 800, 600  
 GRID_COLUMNS = 5  
-BUTTON_WIDTH, BUTTON_HEIGHT = 120, 60  
+BUTTON_WIDTH, BUTTON_HEIGHT = 120, 60 
 BUTTON_SPACING = 20  
 BUTTON_COLOR = (0, 128, 128) 
 WHITE = (255, 255, 255)
 grid_color = (50, 44, 43)
 highlight_color = (255, 255, 255)
-# Initialize screen
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Level Selection Menu")
 
+
 in_menu = True
 selected_level = None
-counte = 0
+counte = 0  
 
+# Fonts
 font = pygame.font.Font(None, 36)
 
 def draw_menu(levels):
-    """ Draws the level selection menu. """
+
     screen.fill(MENU_BACKGROUND)
-    
-    # Draw title
     title_font = pygame.font.Font(None, 48)
     title = title_font.render("Select a Level", True, WHITE)
     title_rect = title.get_rect(center=(WIDTH // 2, 100))
@@ -78,6 +79,8 @@ class Game:
         self.cols = cols
 
     def load(self):
+        global counte
+        counte = 0
         for hole_data in self.level_data[2]:
             hole_type, (row, col) = hole_data
             color = (20, 21, 15)
@@ -87,19 +90,29 @@ class Game:
             color = (128, 61, 59) if ball_type == "Attract" else (30, 62, 98) if ball_type == "Hate" else (105, 117, 101)
             center = self.grid.to_pixel(row, col)
             pygame.draw.circle(screen, color, (int(center.x), int(center.y)), self.grid.cell_size // 4)
+        # print ('sasa')
         
     def movement(self, new_row, new_col, ball_index):
         if self.level_data[3] >= counte:
             ball_type, _ = self.level_data[1][ball_index]
-            if ball_type in ["Attract", "Hate"]:
+            if ball_type in ["Attract", "Hate"] and not self.position_occupied(new_row, new_col):
                 self.level_data[1][ball_index] = (ball_type, (new_row, new_col))
-                self.load()
+                # self.load()
                 self.do(new_row, new_col, ball_type)
 
     def do(self, new_row, new_col, moved_ball_type):
+        in_line = []
         for i, (ball_type, (row, col)) in enumerate(self.level_data[1]):
-            if (row == new_row and col == new_col):
-                continue
+            if (row == new_row or col == new_col) and (row != new_row or col != new_col):
+                distance = abs(row - new_row) + abs(col - new_col)
+                in_line.append((distance, i, ball_type, row, col))
+        
+        if moved_ball_type == "Attract":
+            in_line.sort()
+        elif moved_ball_type == "Hate":
+            in_line.sort(reverse=True)
+
+        for _, i, ball_type, row, col in in_line:
             if row == new_row:
                 if moved_ball_type == "Attract":
                     if col < new_col and col + 1 < self.cols and not self.position_occupied(row, col + 1):
@@ -123,7 +136,6 @@ class Game:
                         self.level_data[1][i] = (ball_type, (row - 1, col))
                     elif row > new_row and row + 1 < self.rows and not self.position_occupied(row + 1, col):
                         self.level_data[1][i] = (ball_type, (row + 1, col))
-
     def position_occupied(self, row, col):
         return any(pos == (row, col) for _, pos in self.level_data[1])
     
@@ -169,15 +181,15 @@ def main():
                     if button_rect.collidepoint(mouse_pos):
                         selected_level = level_index
                         in_menu = False
-                        level_data = levels[selected_level]
-                        
+                        level_data = deepcopy(levels[selected_level])
+                        width ,hight= WIDTH ,HEIGHT
                         rows, cols = level_data[4], level_data[5]
-                        cell_size = min(WIDTH // cols, HEIGHT // rows)
+                        cell_size = min(width // cols, hight // rows)
                         screen = pygame.display.set_mode((cols * cell_size + 100, rows * cell_size + 100))
                         grid = Grid(cell_size, rows, cols)
                         game = Game(level_data, grid,rows , cols)
+                        search = Search(grid, level_data,game)
                         break
-            
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
                     row = max(row - 1, 0)
@@ -191,6 +203,17 @@ def main():
                     is_selected = True
                 elif event.key == pygame.K_e:
                     is_moved = True
+                if event.key == pygame.K_b:
+                    solution = search.BFS()
+                if event.key == pygame.K_d:
+                    solution = search.DFS()
+                if event.key == pygame.K_q:
+                    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+                    pygame.display.set_caption("Level Selection Menu")
+                    game.load()
+                    in_menu = True
+
+
         if in_menu:
             draw_menu(levels)
         else:
@@ -206,7 +229,7 @@ def main():
                     is_moved = False
                 if (curRow, curCol) == (b_row, b_col):
                     selected_ball_index = i
-                    if ball_type != "Immobile" and is_moved:
+                    if ball_type != "Immobile" and is_moved and not game.position_occupied(row,col):
                         if counte < game.level_data[3]:
                             counte+=1
                             game.movement(row, col, selected_ball_index)
@@ -222,7 +245,6 @@ def main():
             moves_text = font.render(f"Moves: {game.level_data[3] - counte}", True, (0, 0, 0))
             screen.blit(moves_text, (10, 10))
             pygame.display.flip()
-
         clock.tick(60)
 
 main()
