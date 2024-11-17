@@ -1,6 +1,6 @@
 from collections import deque
 from copy import deepcopy
-
+import heapq
 class Search:
     def __init__(self, grid, level_data, game):
         self.grid = grid
@@ -108,5 +108,55 @@ class Search:
         return None
     
 
+
+    def UCS(self):
+        initial_state = tuple((ball_type, (row, col)) for ball_type, (row, col) in self.game.level_data[1])
+        priority_queue = [(0, initial_state, [])]  # (cost, state, path)
+        visited = set()
+
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right
+
+        while priority_queue:
+            cost, current_state, path = heapq.heappop(priority_queue)
+
+            if current_state in visited:
+                continue
+            visited.add(current_state)
+
+            self.game.level_data[1] = list(current_state)
+
+            if self.game.win():
+                print("Winning state reached:", current_state)
+                return path
+
+            for i, (ball_type, (row, col)) in enumerate(current_state):
+                if ball_type == "Immobile":
+                    continue
+
+                for dr, dc in directions:
+                    new_row, new_col = row, col
+                    move_cost = 0
+
+                    while (0 <= new_row + dr < self.grid.rows and
+                           0 <= new_col + dc < self.grid.cols and
+                           not self.position_occupied(new_row + dr, new_col + dc, current_state)):
+                        new_row += dr
+                        new_col += dc
+                        move_cost += 1  # Each step costs 1
+
+                    self.game.movement(new_row, new_col, i)
+
+                    new_state = tuple(
+                        (bt, pos)
+                        for idx, (bt, pos) in enumerate(self.game.level_data[1])
+                    )
+
+                    if new_state not in visited:
+                        heapq.heappush(priority_queue, 
+                                       (cost + move_cost, new_state, path + [(i, (new_row, new_col))]))
+
+        print("No solution found")
+        return None
+    
     def position_occupied(self, row, col, state):
         return any(pos == (row, col) for _, pos in state)

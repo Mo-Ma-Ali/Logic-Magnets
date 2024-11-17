@@ -80,7 +80,7 @@ class Game:
 
     def load(self):
         global counte
-        counte = 0
+        # counte = 0
         for hole_data in self.level_data[2]:
             hole_type, (row, col) = hole_data
             color = (20, 21, 15)
@@ -207,11 +207,14 @@ def main():
                     solution = search.BFS()
                 if event.key == pygame.K_d:
                     solution = search.DFS()
+                if event.key == pygame.K_u:
+                    solution = search.UCS()
                 if event.key == pygame.K_q:
                     screen = pygame.display.set_mode((WIDTH, HEIGHT))
                     pygame.display.set_caption("Level Selection Menu")
                     game.load()
                     in_menu = True
+                    counte = 0
 
 
         if in_menu:
