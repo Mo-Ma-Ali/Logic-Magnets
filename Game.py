@@ -209,6 +209,8 @@ def main():
                     solution = search.DFS()
                 if event.key == pygame.K_u:
                     solution = search.UCS()
+                if event.key == pygame.K_f:
+                    solution = search.hill_climbing()
                 if event.key == pygame.K_q:
                     screen = pygame.display.set_mode((WIDTH, HEIGHT))
                     pygame.display.set_caption("Level Selection Menu")

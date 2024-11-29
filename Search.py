@@ -157,6 +157,89 @@ class Search:
 
         print("No solution found")
         return None
-    
+        
+
     def position_occupied(self, row, col, state):
         return any(pos == (row, col) for _, pos in state)
+
+    def hill_climbing(self):
+        print("Stage 1: Solving the game to find target positions.")
+        initial_state = tuple((ball_type, (row, col)) for ball_type, (row, col) in self.game.level_data[1])
+
+        bfs_solution = self.BFS()
+        if bfs_solution is None:
+            print("Unable to find an initial solution.")
+            return None
+
+        target_positions = {
+            ball_type: (row, col) for ball_type, (row, col) in self.game.level_data[1]
+        }
+        print("Target positions established:", target_positions)
+
+        print("Stage 2: Using hill climbing to optimize the path to target positions.")
+        current_state = initial_state
+        visited = set()
+        visited.add(current_state)
+        path = []
+
+        directions = [(-1, 0), (1, 0), (0, -1), (0, 1)]  # Up, Down, Left, Right
+
+        while True:
+            self.game.level_data[1] = list(current_state)
+
+            if all(pos == target_positions[ball_type] for ball_type, pos in current_state):
+                print("Reached target positions:", current_state)
+                return path
+
+            neighbors = []
+
+            for i, (ball_type, (row, col)) in enumerate(current_state):
+                if ball_type == "Immobile":
+                    continue
+
+                for dr, dc in directions:
+                    new_row, new_col = row, col
+
+                    while (0 <= new_row + dr < self.grid.rows and
+                        0 <= new_col + dc < self.grid.cols and
+                        not self.position_occupied(new_row + dr, new_col + dc, current_state)):
+                        new_row += dr
+                        new_col += dc
+
+                    self.game.movement(new_row, new_col, i)
+
+                    new_state = tuple(
+                        (bt, pos)
+                        for idx, (bt, pos) in enumerate(self.game.level_data[1])
+                    )
+
+                    if new_state not in visited:
+                        heuristic = self.evaluate_heuristic(new_state, target_positions)
+                        neighbors.append((heuristic, new_state, (i, (new_row, new_col))))
+
+                    # Restore the ball's position
+                    self.game.level_data[1][i] = (ball_type, (row, col))
+
+            if not neighbors:
+                print("No better neighbors found, stopping and back to first sulotion.")
+                self.BFS()
+                return None
+
+            neighbors.sort(reverse=True, key=lambda x: x[0])  # Sort by heuristic descending
+            best_heuristic, best_state, best_move = neighbors[0]
+
+            if best_heuristic <= self.evaluate_heuristic(current_state, target_positions) and self.game.win():
+                print("Local maximum reached.",best_state)
+                return None
+
+            current_state = best_state
+            visited.add(current_state)
+            path.append(best_move)
+
+    def evaluate_heuristic(self, state, target_positions):
+        heuristic = 0
+        for ball_type, (row, col) in state:
+            if ball_type in target_positions:
+                target_row, target_col = target_positions[ball_type]
+                heuristic -= abs(row - target_row) + abs(col - target_col)  # Lower is better
+        return heuristic
